@@ -5,9 +5,10 @@ using namespace std;
 
 FILE* input_fp, * output_fp;
 
-typedef vector<int> process;
+typedef vector<int> process; // a simple structure for containing process data
+// 0: process number 1: arrival time 2: cpu usage time
 
-bool sortingFunction(const vector<int>& v1, const vector<int>& v2)
+bool sortingFunction(const vector<int>& v1, const vector<int>& v2) // sorting function for std::sort
 {
 	if (v1[1] < v2[1]) return true;
 	if (v1[1] > v2[1]) return false;
@@ -18,10 +19,12 @@ bool sortingFunction(const vector<int>& v1, const vector<int>& v2)
 
 void waitingTime(vector<process> vec, int processCount)
 {
-	int time = vec[0][1], wt = 0, tt = 0;
+	int time = vec[0][1], wt = 0, tt = 0; //our starting time will be the first arrival time
+	// waiting time and total time, wt for each iteration tt for total
+
 	for(int i = 0; i<processCount; i++)
 	{
-		if (vec[i][1] >= time)
+		if (vec[i][1] >= time) // if the arrival is after all the processes are done
 		{
 			wt = 0;
 			time += vec[i][1] - time;
@@ -46,9 +49,9 @@ int main()
 		fprintf(stderr, "can't open %s\n", "fcfs.out");
 	}
 
-	int processCount;
+	int processCount; //number of processes to be added
 
-	vector<process> storeVector;
+	vector<process> storeVector; //vector containing all the processes
 
 	fscanf(input_fp, "%d", &processCount);
 
@@ -60,12 +63,12 @@ int main()
 		{
 			int temp = 0;
 			fscanf(input_fp, "%d", &temp);
-			process.push_back(temp);
+			process.push_back(temp); // process number, arrival and usage time are added
 		}
-		storeVector.push_back(process);
+		storeVector.push_back(process); // the process is then appended to storeVector
 	}
 
-	sort(storeVector.begin(), storeVector.end(), sortingFunction);
+	sort(storeVector.begin(), storeVector.end(), sortingFunction); // sorts with arrival time and process number (if necessary)
 
 	waitingTime(storeVector, processCount);
 }
